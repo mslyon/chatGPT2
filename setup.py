@@ -1,33 +1,45 @@
-"""Setup for pdfXBlock."""
+"""Setup for chatgptxblock XBlock."""
+
 
 import os
+
 from setuptools import setup
 
 
-def package_data(pkg, root):
-    """Generic function to find package_data for `pkg` under `root`."""
+def package_data(pkg, roots):
+    """Generic function to find package_data.
+
+    All of the files under each of the `roots` will be declared as package
+    data for package `pkg`.
+
+    """
     data = []
-    for dirname, _, files in os.walk(os.path.join(pkg, root)):
-        for fname in files:
-            data.append(os.path.relpath(os.path.join(dirname, fname), pkg))
+    for root in roots:
+        for dirname, _, files in os.walk(os.path.join(pkg, root)):
+            for fname in files:
+                data.append(os.path.relpath(os.path.join(dirname, fname), pkg))
 
     return {pkg: data}
 
 
 setup(
-    name='pdf-xblock',
+    name='chatgpt-xblock',
     version='0.1',
-    description='This XBlock provides an easy way to embed a PDF.',
+    description='chatgpt XBlock',   # TODO: write a better description.
+    license='AGPL-3.0',
+    author='Isanka Wijerathne, abconlinecourses.com',
+    author_email='isankadn@gmail.com',
     packages=[
-        'pdf',
+        'chatgptxblock',
     ],
     install_requires=[
         'XBlock',
+        'openai'
     ],
     entry_points={
         'xblock.v1': [
-            'pdf = pdf:pdfXBlock',
+            'chatgptxblock = chatgptxblock:ChatgptXBlock',
         ]
     },
-    package_data=package_data("pdf", "static"),
+    package_data=package_data("chatgptxblock", "static"),
 )
